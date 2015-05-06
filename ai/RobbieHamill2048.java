@@ -35,20 +35,27 @@ public class RobbieHamill2048 extends AbstractPlayer {
 			possibleMoves.add(move);
 			double score = eval.evaluate(game);
 			
-			for(int i = 0; i<7; i++){
+			for(int i = 0; i<20; i++){
 			for(MOVE move2 : game.getMoves()) {
 				game.move(move2); 
 				possibleMoves.add(move2);
 				score = eval.evaluate(game);
-		
-							
+				List<MOVE> direction = new ArrayList<MOVE>();
+				direction.addAll(game.getMoves());
+				if(direction.size()<4){
+					game.undo();
+					possibleMoves.remove(possibleMoves.size()-1);
+					}			
 				//break;
-						}
+				}
 			}
+			game.
+			
 			
 			for(int j = 0; j<possibleMoves.size(); j++){
 				game.undo();
 			}
+			
 			
 			if(score > bestScore) {
 				bestMoves.clear();
@@ -59,6 +66,9 @@ public class RobbieHamill2048 extends AbstractPlayer {
 			}
 			
 		}
+		bestMoves.addAll(possibleMoves);
+		
+		MOVE bestMove = bestMoves.remove(0);
 		
 //		let Agenda = [S0
 //		              ]
@@ -69,7 +79,8 @@ public class RobbieHamill2048 extends AbstractPlayer {
 //		             let Next = NextStates(Current)
 //		             let Agenda = Next+Agenda
 //		
-		return bestMoves.get(random.nextInt(bestMoves.size()));
+//		return bestMoves.get(random.nextInt(bestMoves.size()));
+	return bestMove;
 	}
 	@Override
 	public int studentID() {
