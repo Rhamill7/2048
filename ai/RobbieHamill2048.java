@@ -23,58 +23,55 @@ public class RobbieHamill2048 extends AbstractPlayer {
 
 	@Override
 	public MOVE getMove(State game) {
-		int limit = 4;
+		int limit = 3;
 		double bestScore = Double.NEGATIVE_INFINITY;
 		MOVE bestMove = null;
-		for (MOVE move: game.getMoves()){
+		pause();
+		for (MOVE move : game.getMoves()) {
 			game.move(move);
-		double score = depthLimitedSearch(game, limit);
-		game.undo();
-		
-		if(score > bestScore) {
-			bestScore = score;
-			bestMove = move;
-//		} else if (score == bestScore) {
-//			bestMoves.add(move);
-//		}
+			double score = depthLimitedSearch(game, limit);
+			game.undo();
+
+			if (score > bestScore) {
+				bestScore = score;
+				bestMove = move;
+				// } else if (score == bestScore) {
+				// bestMoves.add(move);
+				// }
+			}
 		}
-		}
-		
+
 		return bestMove;
 
-		//pause();
 	}
 
-	
-	public double depthLimitedSearch(State game, int limit){
+	public double depthLimitedSearch(State game, int limit) {
 		List<MOVE> bestMoves = new ArrayList<MOVE>();
 		double score = 0;
 		double bestScore = Double.NEGATIVE_INFINITY;
-		for(MOVE move : game.getMoves()) {
-			
+		for (MOVE move : game.getMoves()) {
+
 			game.move(move);
 			score = eval.evaluate(game);
-			if (limit != 0){
-		score =	depthLimitedSearch(game, limit-1);
-		}
-			
-			if(score > bestScore) {
+			if (limit != 0) {
+				score = depthLimitedSearch(game, limit - 1);
+			}
+
+			if (score > bestScore) {
 				bestMoves.clear();
 				bestMoves.add(move);
 				bestScore = score;
 			} else if (score == bestScore) {
 				bestMoves.add(move);
 			}
-			
-			
+
 			game.undo();
 
 		}
 		return bestScore;
-		
+
 	}
-	
-	
+
 	@Override
 	public int studentID() {
 		return 201213786;
